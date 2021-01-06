@@ -1,2 +1,6 @@
-# bebop
-MongoDB homework assingment
+# MongoDB homework assignment
+
+### How to submit
+- fork this repository
+- clone your fork to your local machine
+-
