@@ -3,8 +3,10 @@
 * followed by an implementation in native javascript manipulating the dataset object. Mongo documentation has been
 * included in the questions as well.
 *
-* The dataset object is a json representation of the MongoDB database.
+* The dataset object is a json representation of the MongoDB database, besides the 'ownerId'.
+* MongoDB Compass can be a great help for the aggregations.
 * */
+
 'use strict'
 import mongoDB from 'mongodb';
 import { dataset } from './dataset.js';
