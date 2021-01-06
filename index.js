@@ -16,7 +16,7 @@ async function main() {
     /**
      * Connection URI. This should be present in the email that was sent with this assignment.
      */
-    const uri = "mongodb+srv://tempUser:OUVxpaaTUob9jvMM@mars.9bbf5.mongodb.net/homework?retryWrites=true&w=majority";
+    const uri = "";
 
     /**
      * The Mongo Client you will use to interact with your database
