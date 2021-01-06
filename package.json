@@ -1,0 +1,24 @@
+{
+  "name": "bebop",
+  "version": "1.0.0",
+  "description": "Homework assignment",
+  "main": "index.js",
+  "dependencies": {
+    "mongodb": "^3.6.3"
+  },
+  "type": "module",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/meetgradient/bebop.git"
+  },
+  "author": "Morgan Greff",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/meetgradient/bebop/issues"
+  },
+  "homepage": "https://github.com/meetgradient/bebop#readme"
+}
