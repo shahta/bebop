@@ -74,8 +74,8 @@ async function main() {
 
         //Javascript
 
-        // setting two variables to track most quotes and the index of the character with the quotes, assuming 
-        // first character has the most quotes
+        // setting two variables to track most quotes and the index of the character with the corresponding quotes
+        // start by assuming first document in characters has the most quotes
         let maxq = dataset.characters[0].quotes.length;
         let charIndex = 0;
 
@@ -120,8 +120,8 @@ async function main() {
         //     ]
         // )
 
-        // adding two new fields to each document in character collection: totalQuotes - how many quotes character has
-        // totalTraits - how many personality traits a character has
+        // adding two new fields to each document in character collection: totalQuotes - how many quotes that character has
+        // totalTraits - how many personality traits that character has
         database.characters.aggregate(
             {
                 $addFields: {
