@@ -147,28 +147,28 @@ async function main() {
          ****************************************************************************************************/
 
         //MongoDB
-        database.characters.aggregate([
+        database.ships.aggregate([
             {
                 $lookup:
                 {
-                    from: 'ships',
-                    localField: 'firstName',
-                    foreignField: 'ownerId',
-                    as: 'characters_ship'
+                    from: 'characters',
+                    localField: 'ownerId',
+                    foreignField: '_id',
+                    as: 'characters_ships'
                 }
             }
         ])
 
         //Javascript
-        // comparing ownerId field of ships to firstName field of characters
-        // if names match, join distinct fields from ships into corresponding character
+        // comparing ownerId field of ships to firstName field of characters.
+        // if names match, join distinct fields from ships into corresponding character by creating a 
+        // new array with an object containing the fields from characters collection.
         for (ship of dataset.ships){
             for (char of dataset.characters){
                 if (ship.ownerId.split(' ')[0] === char.firstName){
-                    char['shipName'] = ship.name;
-                    char['model'] = ship.model;
-                    char['crewSize'] = ship.crewSize
-                    char["active"] = true;
+                    ship['characters_ships'] = [
+                        {'firstName': char.firstName, 'lastName': char.lastName, 'personalityTraits': char.personalityTraits, 'quotes':char.quotes}
+                    ]
                 }
             }
         }
