@@ -147,6 +147,7 @@ async function main() {
          ****************************************************************************************************/
 
         //MongoDB
+        // ownerId field represents same ObjectId as _id so we can join on this field
         database.ships.aggregate([
             {
                 $lookup:
