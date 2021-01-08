@@ -161,8 +161,8 @@ async function main() {
         ])
 
         //Javascript
-        // comparing ownerId field of ships to firstName field of characters.
-        // if names match, join distinct fields from ships into corresponding character by creating a 
+        // we split the ownerId field and get the first name only to compare to firstName field of characters collection
+        // if names match, join distinct fields from characters into corresponding ship by creating a 
         // new array with an object containing the fields from characters collection.
         for (ship of dataset.ships){
             for (char of dataset.characters){
