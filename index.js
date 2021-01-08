@@ -16,7 +16,7 @@ async function main() {
     /**
      * Connection URI. This should be present in the email that was sent with this assignment.
      */
-    const uri = "";
+    const uri = "mongodb+srv://tempUser:OUVxpaaTUob9jvMM@mars.9bbf5.mongodb.net/homework";
 
     /**
      * The Mongo Client you will use to interact with your database
@@ -37,20 +37,23 @@ async function main() {
 
         //MongoDB
         //example: await database.collection("characters").count();
+        database.ships.count();
 
         //Javascript
         //example: json.characters.length;
-
+        let length = dataset.ships.length;
         /*****************************************************************************************************
          *   Question Two                                                                                    *
          *                                                                                                   *
-         * Write a MongoDB query to display any 5 documents using pretty format in the collection ships.     *
+         * Write a MongoDB query to display any 2 documents using pretty format in the collection ships.     *
          * See https://docs.mongodb.com/manual/reference/method/db.collection.find/ for more details.        *
          ****************************************************************************************************/
 
         //MongoDB
+        database.ships.find().limit(2).pretty()
 
         //Javascript
+        let random = dataset.ships.slice(1)
 
         /*****************************************************************************************************
          *   Question Three                                                                                  *
@@ -60,8 +63,33 @@ async function main() {
          ****************************************************************************************************/
 
         //MongoDB
+        // database.characters.aggregate(
+        //     [
+        //         { $sort : {quotes : -1}}
+        //     ]
+        // )
+
+        // sorting characters by most quotes in descending order and grabbing first one
+        database.characters.find().sort( { "quotes": -1 } ).limit(1)
 
         //Javascript
+
+        // setting two variables to track most quotes and the index of the character with the quotes, assuming 
+        // first character has the most quotes
+        let maxq = dataset.characters[0].quotes.length;
+        let charIndex = 0;
+
+        // for loop to determine if any other character has more quotes than the current one 
+        for (i = 1; i < dataset.characters.length; i++){
+            if (dataset.characters[i].quotes.length > maxq){
+                maxq = dataset.characters[i].quotes.length;
+                charIndex = i;
+            }
+        }
+        // when the for loop finishes, charIndex should hold the index of the character with the most quotes
+        // and mostQuotes will return an object of the character with the most quotes
+        let mostQuotes = dataset.characters[charIndex]
+        
 
         /*****************************************************************************************************
          *   Question Four                                                                                   *
@@ -72,8 +100,9 @@ async function main() {
          ****************************************************************************************************/
 
         //MongoDB
-
+        database.characters.find( { personalityTraits: { $in: ["mature", "lazy"] } } );
         //Javascript
+        let matureLazy = dataset.characters.filter(character => character.personalityTraits.includes("mature") || character.personalityTraits.includes("lazy"));
 
         /*****************************************************************************************************
          *   Question Five                                                                                   *
@@ -84,8 +113,31 @@ async function main() {
          ****************************************************************************************************/
 
         //MongoDB
+        // database.characters.aggregate(
+        //     [
+        //         {$match: {}},
+        //         {$group: {_id: "$firstName", quotes: {$count: "$quotes"}, personalityTraits: {$count: "$personalityTraits"}}}
+        //     ]
+        // )
+
+        // adding two new fields to each document in character collection: totalQuotes - how many quotes character has
+        // totalTraits - how many personality traits a character has
+        database.characters.aggregate(
+            {
+                $addFields: {
+                    totalQuotes: {$size: "$quotes"},
+                    totalTraits: {$size: "$personalityTraits"}
+                }
+            }
+        )
 
         //Javascript
+        // creating two new keys for each character
+        // one for the length of their quotes and another key for the length of their personality traits
+        for (char of dataset.characters){
+            char["totalQuotes"] = char.quotes.length
+            char["totalTraits"] = char.personalityTraits.length
+        }
 
         /*****************************************************************************************************
          *   Question Six                                                                                    *
@@ -95,8 +147,31 @@ async function main() {
          ****************************************************************************************************/
 
         //MongoDB
+        database.characters.aggregate([
+            {
+                $lookup:
+                {
+                    from: 'ships',
+                    localField: 'firstName',
+                    foreignField: 'ownerId',
+                    as: 'characters_ship'
+                }
+            }
+        ])
 
         //Javascript
+        // comparing ownerId field of ships to firstName field of characters
+        // if names match, join distinct fields from ships into corresponding character
+        for (ship of dataset.ships){
+            for (char of dataset.characters){
+                if (ship.ownerId.split(' ')[0] === char.firstName){
+                    char['shipName'] = ship.name;
+                    char['model'] = ship.model;
+                    char['crewSize'] = ship.crewSize
+                    char["active"] = true;
+                }
+            }
+        }
 
     } catch (e) {
         console.error(e);
